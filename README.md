@@ -77,5 +77,5 @@ Open [http://localhost:3000](http://localhost:3000) to see your investment copil
 ## 🏆 Hackathon Submission
 This project was built for the **Startup Hackathon**. It focuses on bridging the gap between raw market data and actionable intelligence for retail investors.
 
-**Author:** [Siddharth Singh](https://github.com/siddharth-singh-1206)
+**Author:** [Adarsh Singh](https://github.com/AdarshSinghazm)
 
