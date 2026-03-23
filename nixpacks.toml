@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodePackages.npm", "python3"]
+
+[phases.install]
+cmds = ["npm install", "pip install -r requirements.txt"]
+
+[phases.build]
+cmds = ["npx prisma generate", "npx prisma db push", "npm run build"]
+
+[start]
+cmd = "npm start"

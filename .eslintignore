@@ -1,0 +1,7 @@
+# Eslint ignore file
+node_modules/
+.next/
+dist/
+*.js
+!next.config.js
+!tailwind.config.js

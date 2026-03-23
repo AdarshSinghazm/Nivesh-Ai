@@ -1,0 +1,63 @@
+NIVESH AI - TECHNICAL DOCUMENTATION
+====================================
+
+1. CORE ARCHITECTURE
+-------------------
+- Framework: Next.js 16 (App Router)
+- Language: TypeScript (Frontend/API) & Python (ML Engine)
+- Build System: Turbopack for ultra-fast local development
+- Deployment Ready: Configured for Railway/Vercel with Nixpacks support
+
+2. FRONTEND STACK (UI/UX)
+-------------------------
+- Styling: Tailwind CSS (Utility-first, responsive design)
+- Animations: Framer Motion (Glassmorphic transitions, smooth hover effects)
+- Data Visualization: Recharts (Dynamic Nifty 50 charts, portfolio distribution)
+- Icons: Lucide React (Standardized professional iconography)
+- Theme: Next Themes (Dark/Light mode support with state persistence)
+
+3. ARTIFICIAL INTELLIGENCE (CO-PILOT)
+------------------------------------
+- Model: Google Gemini Pro (@google/generative-ai)
+- Integration: Direct API integration via Next.js Route Handlers
+- Context Awareness: Injects real-time market data (CMP, RSI, Volume) into prompt templates
+- Logic: Custom prompt engineering for financial-specific advice and risk assessment
+
+4. PROPRIETARY ML ENGINE (RANDOM FOREST)
+----------------------------------------
+- Model Type: Random Forest Regressor (Scikit-Learn)
+- Persistence: joblib serialization (.pkl model files)
+- Input: Historical price, volume, moving averages (MA20), and volatility
+- Execution: Python bridge script (predict_stock.py) called via Node.js child_process
+- Data Source: pre-processed CSV datasets (training_dataset.csv) optimized for low-latency lookups
+
+5. FINANCIAL DATA & EXTERNAL APIS
+---------------------------------
+- Engine: Yahoo Finance (via yahoo-finance2 library)
+- Data Points: Real-time CMP (Current Market Price), 52-week High/Low, RSI, MACD
+- Optimization: Chunked batch fetching (15 symbols per request) to prevent rate limiting
+- Sync: Auto-refreshing market dashboard every 30 seconds
+
+6. DATABASE & PERSISTENCE
+-------------------------
+- Database: PostgreSQL (Relational storage for Users and Holdings)
+- ORM: Prisma (Type-safe database client and automated migrations)
+- Models: User, Account, Session, StockHolding, SubscriptionStatus
+
+7. AUTHENTICATION & SECURITY
+----------------------------
+- Provider: NextAuth.js (Session-based authentication)
+- Security: Password hashing with BcryptJS
+- Session Management: JWT-secured client-side session checks
+
+8. MONETIZATION & BUSINESS LOGIC
+--------------------------------
+- Free Trial: Custom 3-day trial logic based on `trialStartedAt` timestamp
+- Paywall: Modal-based gating for Advanced Analysis features
+- Pricing: Static tiering (Premium @ Rs.299/mo) with mock payment verification
+
+9. ENVIRONMENT & DEPLOYMENT
+---------------------------
+- Requirements: Node.js 18+, Python 3.9+, PostgreSQL
+- Variables: DATABASE_URL, GEMINI_API_KEY, NEXTAUTH_SECRET
+- Config: nixpacks.toml (Manual build plan for hybrid Node/Python environments)

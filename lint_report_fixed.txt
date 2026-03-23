@@ -1,0 +1,188 @@
+
+> ai-investment-copilot@0.1.0 lint
+> eslint
+
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\ai-chat\page.tsx
+  15:19  warning  'session' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  54:25  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\analyze-stock\page.tsx
+    8:22  warning  'TrendingDown' is defined but never used  @typescript-eslint/no-unused-vars
+  374:90  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  387:93  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  400:89  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  412:80  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\analyzer\page.tsx
+  30:48  error    Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  51:12  warning  'aiLoading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\api\market\history\route.ts
+   8:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\api\market\quote\route.ts
+  22:13  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  26:21  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\api\market\route.ts
+  21:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\api\predict\route.ts
+  23:52  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:26  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\api\user\deactivate\route.ts
+  28:24  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\api\user\subscribe\route.ts
+   6:28  warning  'request' is defined but never used       @typescript-eslint/no-unused-vars
+  14:51  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:40  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:45  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:51  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\market\page.tsx
+   8:18  warning  'Filter' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  16:48  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  17:50  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  37:47  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  47:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\market\page.tsx:47:9
+  45 |
+  46 |     useEffect(() => {
+> 47 |         fetchMarketData();
+     |         ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  48 |         fetchChartData(); // Initial chart fetch
+  49 |         const interval = setInterval(fetchMarketData, 30000); // Auto-refresh every 30s
+  50 |         return () => clearInterval(interval);  react-hooks/set-state-in-effect
+  60:48  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\news\page.tsx
+    3:10  warning  'Play' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+    3:30  warning  'TrendingUp' is defined but never used                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+    3:59  warning  'Filter' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  227:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\app\page.tsx
+   5:33  warning  'Shield' is defined but never used            @typescript-eslint/no-unused-vars
+   5:64  warning  'Users' is defined but never used             @typescript-eslint/no-unused-vars
+   5:71  warning  'Play' is defined but never used              @typescript-eslint/no-unused-vars
+   5:77  warning  'CheckCircle' is defined but never used       @typescript-eslint/no-unused-vars
+   7:8   warning  'HeroGraphic' is defined but never used       @typescript-eslint/no-unused-vars
+  10:17  warning  'session' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\components\HeroGraphic.tsx
+  4:22  warning  'DollarSign' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\components\PricePrediction.tsx
+  130:43  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\components\ProfileSettings.tsx
+    6:16  warning  'Lock' is defined but never used                              @typescript-eslint/no-unused-vars
+    6:28  warning  'Settings' is defined but never used                          @typescript-eslint/no-unused-vars
+    6:38  warning  'Shield' is defined but never used                            @typescript-eslint/no-unused-vars
+    6:66  warning  'LogOut' is defined but never used                            @typescript-eslint/no-unused-vars
+    6:74  warning  'CheckCircle' is defined but never used                       @typescript-eslint/no-unused-vars
+   47:32  warning  'setDeactivatePassword' is assigned a value but never used    @typescript-eslint/no-unused-vars
+   52:12  warning  'showPasswordReset' is assigned a value but never used        @typescript-eslint/no-unused-vars
+   52:31  warning  'setShowPasswordReset' is assigned a value but never used     @typescript-eslint/no-unused-vars
+   53:12  warning  'showDeactivate' is assigned a value but never used           @typescript-eslint/no-unused-vars
+   53:28  warning  'setShowDeactivate' is assigned a value but never used        @typescript-eslint/no-unused-vars
+   76:25  error    Unexpected any. Specify a different type                      @typescript-eslint/no-explicit-any
+   83:11  warning  'handleChangePassword' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  118:25  error    Unexpected any. Specify a different type                      @typescript-eslint/no-explicit-any
+  126:11  warning  'handleDeactivateAccount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  153:25  error    Unexpected any. Specify a different type                      @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\components\Sidebar.tsx
+  5:81  warning  'TrendingUp' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\components\ThemeToggle.tsx
+  12:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\components\ThemeToggle.tsx:12:9
+  10 |
+  11 |     useEffect(() => {
+> 12 |         setMounted(true);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |     }, []);
+  14 |
+  15 |     if (!mounted) {  react-hooks/set-state-in-effect
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\auth.ts
+  37:46  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  38:42  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:51  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  64:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\hooks\useLivePrice.ts
+  31:22  warning  'err' is defined but never used                                                                          @typescript-eslint/no-unused-vars
+  49:8   warning  React Hook useEffect has a missing dependency: 'data'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\services\analyzerService.ts
+  359:56  warning  '_' is defined but never used  @typescript-eslint/no-unused-vars
+  359:59  warning  'i' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\services\copilotService.ts
+  3:30  warning  'explainRecommendation' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\services\enhancedStockService.ts
+  94:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\services\liveDataService.ts
+  34:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  84:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\lib\services\subscriptionService.ts
+  7:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\list-models.js
+   1:32  error    A `require()` style import is forbidden     @typescript-eslint/no-require-imports
+  10:15  warning  'model' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\test-gemini.js
+   1:32  error    A `require()` style import is forbidden        @typescript-eslint/no-require-imports
+  21:19  warning  'response' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\test-prisma.js
+  1:26  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\test-yahoo.js
+  2:22  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\verify-batch.js
+  1:34  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\verify-model-script.js
+  1:19  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:14  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\Siddharth Singh\OneDrive\Desktop\lets go\ai-investment-copilot\verify-server.js
+  1:15  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+✖ 89 problems (52 errors, 37 warnings)
+
