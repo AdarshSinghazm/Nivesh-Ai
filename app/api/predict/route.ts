@@ -54,7 +54,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             });
 
             // Write input to script
-            pythonProcess.stdin.write(JSON.stringify({ prices, volumes }));
+            pythonProcess.stdin.write(JSON.stringify({ prices, volumes, symbol }));
             pythonProcess.stdin.end();
         });
 

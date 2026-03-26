@@ -14,6 +14,7 @@ export default function MarketPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState<'all' | 'gainers' | 'losers'>('all');
     const [chartData, setChartData] = useState<PricePoint[]>([]); // Using PricePoint interface
+    const [chartInterval, setChartInterval] = useState<string>('1d');
     const [niftyQuote, setNiftyQuote] = useState<StockQuote | null>(null); // Using StockQuote interface
     const [error, setError] = useState<string | null>(null);
     const [mounted, setMounted] = useState(false);
@@ -40,19 +41,39 @@ export default function MarketPage() {
 
     const fetchChartData = useCallback(async () => {
         try {
-            const history = await getStockHistory('^NSEI', '1d');
+            const history = await getStockHistory('^NSEI', chartInterval);
             if (history && Array.isArray(history)) {
-                const formatted: PricePoint[] = (history as any[]).map((p: any) => ({
-                    day: new Date(p.date).toLocaleDateString('en-US', { weekday: 'short' }),
-                    price: Number(p.close),
-                    fullDate: new Date(p.date).toLocaleDateString()
-                }));
+                const formatted: PricePoint[] = (history as any[]).map((p: any) => {
+                    const date = new Date(p.date);
+                    let label = '';
+                    
+                    if (chartInterval === '1d') {
+                        // For 1D, show Time (Intraday)
+                        label = date.toLocaleTimeString('en-IN', { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            hour12: true 
+                        });
+                    } else if (chartInterval === '5d' || chartInterval === '1mo') {
+                        // For 1W/1M, show Day + Date
+                        label = date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+                    } else {
+                        // For 1Y, show Month
+                        label = date.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' });
+                    }
+
+                    return {
+                        day: label,
+                        price: Number(p.close),
+                        fullDate: date.toLocaleString()
+                    };
+                });
                 setChartData(formatted);
             }
         } catch (err) {
             console.error("Failed to fetch chart data:", err);
         }
-    }, []);
+    }, [chartInterval]);
 
     useEffect(() => {
         setMounted(true); // Component has mounted on the client
@@ -194,11 +215,15 @@ export default function MarketPage() {
                         </div>
                         <div className="flex justify-between items-center mb-8 relative z-10">
                             <h2 className="text-2xl font-bold text-foreground">Nifty 50 Performance</h2>
-                            <select className="bg-secondary border border-border text-foreground/80 text-sm rounded-lg px-4 py-2 outline-none focus:border-primary">
-                                <option>1 Day</option>
-                                <option>1 Week</option>
-                                <option>1 Month</option>
-                                <option>1 Year</option>
+                            <select 
+                                value={chartInterval}
+                                onChange={(e) => setChartInterval(e.target.value)}
+                                className="bg-secondary border border-border text-foreground/80 text-sm rounded-lg px-4 py-2 outline-none focus:border-primary"
+                            >
+                                <option value="1d">1 Day</option>
+                                <option value="5d">1 Week</option>
+                                <option value="1mo">1 Month</option>
+                                <option value="1y">1 Year</option>
                             </select>
                         </div>
                         <div className="h-80 relative z-10">

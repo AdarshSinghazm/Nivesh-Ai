@@ -1,42 +1,4 @@
-import { Stock } from '../types';
-
-export interface TechnicalIndicators {
-    rsi: number; // 0-100
-    macd: number;
-    ma50: number;
-    ma200: number;
-    volume: number;
-    weekHigh52: number;
-    weekLow52: number;
-    support: number;
-    resistance: number;
-    trend: 'bullish' | 'bearish' | 'neutral';
-}
-
-export interface FundamentalMetrics {
-    peRatio: number;
-    sectorPE: number;
-    marketCap: number; // in crores
-    revenueGrowth: number; // percentage
-    earningsGrowth: number; // percentage
-    debtToEquity: number;
-    dividendYield: number; // percentage
-    freeCashFlow: number; // in crores
-    roe: number; // Return on Equity percentage
-}
-
-export interface MarketSentiment {
-    fiiActivity: 'buying' | 'selling' | 'neutral';
-    diiActivity: 'buying' | 'selling' | 'neutral';
-    analystRating: 'strong_buy' | 'buy' | 'hold' | 'sell' | 'strong_sell';
-    newsSentiment: 'positive' | 'negative' | 'neutral';
-}
-
-export interface EnhancedStock extends Stock {
-    technical: TechnicalIndicators;
-    fundamental: FundamentalMetrics;
-    sentiment: MarketSentiment;
-}
+import { Stock, EnhancedStock, TechnicalIndicators, FundamentalMetrics, MarketSentiment } from '../types';
 
 // Fallback data in case API fails
 const fallbackStocks: Record<string, Partial<EnhancedStock>> = {
@@ -68,7 +30,7 @@ async function fetchQuote(symbol: string) {
         const response = await fetch(`/api/market/quote?symbol=${encodeURIComponent(symbolToFetch)}`);
         if (!response.ok) return null;
         const data = await response.json();
-        return data.quote;
+        return data; // returns { quote, fundamentals }
     } catch (error) {
         console.error(`Failed to fetch quote for ${symbol}`, error);
         return null;
@@ -92,7 +54,11 @@ async function fetchBatchQuotes(symbols: string[]) {
 const stockCache: Record<string, { data: EnhancedStock, timestamp: number }> = {};
 const CACHE_DURATION = 60 * 1000; // 1 minute
 
-function mapQuoteToEnhanced(symbol: string, quote: any): EnhancedStock {
+function mapQuoteToEnhanced(symbol: string, quoteData: any): EnhancedStock {
+    // Separate quote and fundamentals
+    const quote = quoteData?.quote || quoteData; // handle both formats
+    const funds = quoteData?.fundamentals || {};
+
     // Default/Fallback values
     const fallback = fallbackStocks[symbol] || {
         riskRating: 'medium',
@@ -121,38 +87,43 @@ function mapQuoteToEnhanced(symbol: string, quote: any): EnhancedStock {
         } as EnhancedStock;
     }
 
+    // Extract real fundamentals if available
+    const fin = funds.financialData || {};
+    const stats = funds.defaultKeyStatistics || {};
+    const summary = funds.summaryDetail || {};
+
     return {
         symbol: symbol,
         name: quote.longName || symbol,
         price: quote.regularMarketPrice || 0,
         change: quote.regularMarketChange || 0,
         changePercent: quote.regularMarketChangePercent || 0,
-        sector: fallback.sector || 'Unknown',
-        riskRating: fallback.riskRating || 'medium', // Yahoo doesn't provide risk rating easily
+        sector: quote.sector || fallback.sector || 'Unknown',
+        riskRating: quote.riskRating || fallback.riskRating || 'medium',
 
         technical: {
-            rsi: 50, // Requires historical data calculation, using default
+            rsi: 50, // Calculated later from history
             macd: 0,
             ma50: quote.fiftyDayAverage || 0,
             ma200: quote.twoHundredDayAverage || 0,
             volume: quote.regularMarketVolume || 0,
             weekHigh52: quote.fiftyTwoWeekHigh || 0,
             weekLow52: quote.fiftyTwoWeekLow || 0,
-            support: (quote.regularMarketPrice || 0) * 0.95, // Simple estimate
-            resistance: (quote.regularMarketPrice || 0) * 1.05, // Simple estimate
+            support: (quote.regularMarketPrice || 0) * 0.95,
+            resistance: (quote.regularMarketPrice || 0) * 1.05,
             trend: (quote.regularMarketPrice > quote.twoHundredDayAverage) ? 'bullish' : 'bearish'
         },
 
         fundamental: {
-            peRatio: quote.trailingPE || 0,
-            sectorPE: (quote.trailingPE || 20) * 1.1, // Estimate
-            marketCap: (quote.marketCap || 0) / 10000000, // Convert to Crores approx
-            revenueGrowth: 10, // Not available in basic quote
-            earningsGrowth: 10,
-            debtToEquity: 0.5,
-            dividendYield: quote.dividendYield || 0,
-            freeCashFlow: 0,
-            roe: 15
+            peRatio: quote.trailingPE || summary.trailingPE || 0,
+            sectorPE: (quote.trailingPE || 20) * 1.1, 
+            marketCap: (quote.marketCap || summary.marketCap || 0) / 10000000, 
+            revenueGrowth: (fin.revenueGrowth || 0) * 100, 
+            earningsGrowth: (fin.earningsGrowth || 0) * 100,
+            debtToEquity: fin.debtToEquity || 0,
+            dividendYield: quote.dividendYield || summary.dividendYield || 0,
+            freeCashFlow: (fin.freeCashflow || 0) / 10000000,
+            roe: (fin.returnOnEquity || 0) * 100
         },
 
         sentiment: fallback.sentiment as MarketSentiment
@@ -165,10 +136,36 @@ export async function getEnhancedStockData(symbol: string): Promise<EnhancedStoc
         return stockCache[symbol].data;
     }
 
+    // 1. Fetch basic quote (real prices)
     const quote = await fetchQuote(symbol);
-    const enhanced = mapQuoteToEnhanced(symbol, quote);
+    let enhanced = mapQuoteToEnhanced(symbol, quote);
 
-    // Only cache if we got valid data (price > 0), otherwise transient error shouldn't be cached long
+    // 2. Fetch technical indicators from Python ML engine (hardens it for real-world)
+    try {
+        const predictResponse = await fetch(`${process.env.NEXTAUTH_URL || ''}/api/predict`, {
+            method: 'POST',
+            body: JSON.stringify({ symbol })
+        });
+        
+        if (predictResponse.ok) {
+            const mlData = await predictResponse.json();
+            if (mlData.technical_analysis) {
+                enhanced.technical = {
+                    ...enhanced.technical,
+                    rsi: mlData.technical_analysis.rsi,
+                    ma50: mlData.technical_analysis.sma50,
+                    trend: mlData.technical_analysis.trend,
+                    support: mlData.technical_analysis.support,
+                    resistance: mlData.technical_analysis.resistance
+                };
+            }
+        }
+    } catch (e) {
+        console.error(`Failed to harden technical data for ${symbol}`, e);
+        // Fall back to the basic quote + placeholders
+    }
+
+    // Only cache if we got valid data (price > 0)
     if (enhanced.price > 0) {
         stockCache[symbol] = { data: enhanced, timestamp: now };
     }

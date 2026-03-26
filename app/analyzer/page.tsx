@@ -233,7 +233,7 @@ export default function AnalyzerPage() {
         return (
             <div className="min-h-screen bg-background p-8 transition-colors duration-300">
                 <div className="max-w-4xl mx-auto animate-fade-in">
-                    <button onClick={reset} className="mb-8 text-gray-500 hover:text-white flex items-center gap-2 transition-colors font-medium">← Back to Start</button>
+                    <button onClick={reset} className="mb-8 text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors font-medium">← Back to Start</button>
 
                     <div className="bg-card rounded-3xl border border-border p-10 md:p-12 shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#00ff9d]/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
@@ -259,7 +259,7 @@ export default function AnalyzerPage() {
                                             {holdings.map((holding, idx) => (
                                                 <div key={idx} className="flex items-center justify-between p-4 bg-card rounded-xl border border-border hover:border-primary/30 transition-colors">
                                                     <div><p className="font-bold text-foreground text-lg">{holding.symbol}</p><p className="text-sm text-muted-foreground"><span className="text-foreground/80 font-medium">{holding.quantity}</span> shares @ <span className="text-foreground/80 font-medium">₹{holding.averagePrice}</span></p></div>
-                                                    <button onClick={() => removeHolding(idx)} className="text-gray-500 hover:text-[#ff4444] p-2 hover:bg-[#ff4444]/10 rounded-lg transition-colors"><Trash2 size={20} /></button>
+                                                    <button onClick={() => removeHolding(idx)} className="text-muted-foreground hover:text-destructive p-2 hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 size={20} /></button>
                                                 </div>
                                             ))}
                                         </div>
@@ -358,23 +358,23 @@ export default function AnalyzerPage() {
 
                 {/* Deep Analysis Modal */}
                 {selectedRec && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
-                        <div className="bg-[#0f172a] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-700 shadow-2xl relative text-slate-100">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md animate-fade-in">
+                        <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-3xl border border-border shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] relative text-foreground transition-all duration-300">
                             <button
                                 onClick={() => setSelectedRecId(null)}
-                                className="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors bg-slate-800/50 p-2 rounded-full hover:bg-slate-700"
+                                className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-all bg-muted/10 p-2 rounded-full hover:bg-muted/30"
                             >
                                 <X size={20} />
                             </button>
 
                             <div className="p-8 md:p-12 space-y-8">
                                 {/* Header */}
-                                <div className="border-b border-slate-700 pb-8">
+                                <div className="border-b border-border pb-8">
                                     <div className="flex items-center gap-4 mb-2">
-                                        <h2 className="text-5xl font-black text-white tracking-tight">{selectedRec.stock.symbol}</h2>
-                                        <div className={`px-4 py-1.5 rounded-lg text-sm font-black uppercase tracking-widest ${selectedRec.action === 'buy' ? 'bg-[#00ff9d] text-black shadow-[0_0_15px_rgba(0,255,157,0.3)]' : 'bg-[#ff4444] text-white shadow-[0_0_15px_rgba(255,68,68,0.3)]'}`}>{selectedRec.action} RECOMMENDED</div>
+                                        <h2 className="text-5xl font-black text-foreground tracking-tight">{selectedRec.stock.symbol}</h2>
+                                        <div className={`px-4 py-1.5 rounded-lg text-sm font-black uppercase tracking-widest ${selectedRec.action === 'buy' ? 'bg-primary text-black shadow-[0_0_15px_rgba(0,255,157,0.3)]' : 'bg-destructive text-white shadow-[0_0_15px_rgba(255,68,68,0.3)]'}`}>{selectedRec.action} RECOMMENDED</div>
                                     </div>
-                                    <p className="text-xl text-slate-400">{selectedRec.stock.name}</p>
+                                    <p className="text-xl text-muted-foreground">{selectedRec.stock.name}</p>
                                 </div>
 
                                 {/* Why we chose this */}
@@ -383,33 +383,33 @@ export default function AnalyzerPage() {
                                         <h3 className="text-sm font-black text-[#00ff9d] uppercase tracking-widest mb-4 flex items-center gap-2">
                                             <Target size={16} /> Why This Rank?
                                         </h3>
-                                        <p className="text-slate-300 text-lg leading-relaxed mb-6">{selectedRec.reasoning}</p>
+                                        <p className="text-muted-foreground text-lg leading-relaxed mb-6">{selectedRec.reasoning}</p>
 
                                         <h3 className="text-sm font-black text-[#00ff9d] uppercase tracking-widest mb-4 flex items-center gap-2">
                                             <Shield size={16} /> How it Helps You
                                         </h3>
-                                        <p className="text-slate-300 leading-relaxed">{selectedRec.details?.userAlignment}</p>
+                                        <p className="text-muted-foreground leading-relaxed">{selectedRec.details?.userAlignment}</p>
                                     </div>
 
-                                    <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-                                        <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6">Key Metrics</h3>
+                                    <div className="bg-white rounded-2xl p-6 border border-border shadow-sm transition-colors duration-300">
+                                        <h3 className="text-sm font-black text-muted-foreground uppercase tracking-widest mb-6">Key Metrics</h3>
                                         <div className="space-y-4">
-                                            <div className="flex items-center justify-between border-b border-slate-700 pb-4">
-                                                <span className="text-slate-400">Analyst Rating</span>
-                                                <span className="text-white font-bold">{selectedRec.details?.analystRating}</span>
+                                            <div className="flex items-center justify-between border-b border-border pb-4">
+                                                <span className="text-muted-foreground">Analyst Rating</span>
+                                                <span className="text-foreground font-bold">{selectedRec.details?.analystRating}</span>
                                             </div>
-                                            <div className="flex items-center justify-between border-b border-slate-700 pb-4">
-                                                <span className="text-slate-400">Sector Trend</span>
-                                                <span className={`font-bold ${selectedRec.details?.sectorTrend === 'Bullish' ? 'text-[#00ff9d]' : 'text-yellow-400'}`}>{selectedRec.details?.sectorTrend}</span>
+                                            <div className="flex items-center justify-between border-b border-border pb-4">
+                                                <span className="text-muted-foreground">Sector Trend</span>
+                                                <span className={`font-bold ${selectedRec.details?.sectorTrend === 'Bullish' ? 'text-primary' : 'text-yellow-500'}`}>{selectedRec.details?.sectorTrend}</span>
                                             </div>
-                                            <div className="flex items-center justify-between border-b border-slate-700 pb-4">
-                                                <span className="text-slate-400">Volatility</span>
-                                                <span className="text-white font-bold">{selectedRec.details?.volatility}</span>
+                                            <div className="flex items-center justify-between border-b border-border pb-4">
+                                                <span className="text-muted-foreground">Volatility</span>
+                                                <span className="text-foreground font-bold">{selectedRec.details?.volatility}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
-                                                <span className="text-slate-400">Confidence Score</span>
+                                                <span className="text-muted-foreground">Confidence Score</span>
                                                 <div className="flex items-center gap-1">
-                                                    {[1, 2, 3, 4, 5].map(i => <div key={i} className={`w-2 h-2 rounded-full ${i <= (selectedRec.confidence === 'high' ? 5 : 3) ? 'bg-[#00ff9d]' : 'bg-slate-700'}`} />)}
+                                                    {[1, 2, 3, 4, 5].map(i => <div key={i} className={`w-2 h-2 rounded-full ${i <= (selectedRec.confidence === 'high' ? 5 : 3) ? 'bg-primary' : 'bg-muted/30'}`} />)}
                                                 </div>
                                             </div>
                                         </div>
@@ -426,26 +426,32 @@ export default function AnalyzerPage() {
                                     </div>
                                 )}
 
-                                {/* Chart Section */}
                                 <div>
-                                    <h3 className="text-sm font-black text-[#00ff9d] uppercase tracking-widest mb-6 flex items-center gap-2">
-                                        <Zap size={16} /> 30-Day Price Trend
-                                    </h3>
-                                    <div className="h-64 bg-secondary rounded-2xl border border-border p-4">
+                                    <div className="h-64 bg-white rounded-2xl border border-border p-4 relative overflow-hidden shadow-sm transition-colors duration-300">
+                                        <div className="absolute top-4 right-4 z-10 flex gap-4 text-[10px] font-bold uppercase tracking-widest">
+                                            <div className="flex items-center gap-1.5 text-primary"><div className="w-2 h-2 rounded-full bg-primary"></div> History</div>
+                                            <div className="flex items-center gap-1.5 text-blue-500"><div className="w-2 h-2 rounded-full bg-blue-500"></div> 30D Forecast</div>
+                                        </div>
                                         <StockChart
-                                            data={selectedRec.modelPrediction?.historical_data?.prices
-                                                ? selectedRec.modelPrediction.historical_data.prices.map((p, i) => ({
-                                                    day: `Day ${i + 1}`,
+                                            data={[
+                                                ...(selectedRec.modelPrediction?.historical_data?.prices?.map((p, i) => ({
+                                                    day: `H${i - 30}`,
                                                     price: Number(p.toFixed(2))
-                                                }))
-                                                : selectedRec.historicalData
-                                            }
+                                                })) || []),
+                                                ...(selectedRec.modelPrediction?.forecast?.map((f) => ({
+                                                    day: f.day,
+                                                    price: f.price,
+                                                    upper: f.upper,
+                                                    lower: f.lower,
+                                                    isForecast: true
+                                                })) || [])
+                                            ]}
                                         />
                                     </div>
-                                    <p className="text-center text-xs text-gray-600 mt-4 uppercase tracking-widest">
-                                        {selectedRec.modelPrediction?.historical_data
-                                            ? "* Real Historical Data tracked by AI Model"
-                                            : "* Simulated historical data for demonstration"}
+                                    <p className="text-center text-xs text-muted-foreground mt-4 uppercase tracking-tight font-medium">
+                                        {selectedRec.modelPrediction?.forecast
+                                            ? "* AI Model Projection: Combined History + 30-Day Fan Chart Forecast"
+                                            : "* Simulated data for demonstration"}
                                     </p>
                                 </div>
                             </div>

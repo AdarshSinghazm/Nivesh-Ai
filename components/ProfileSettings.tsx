@@ -2,18 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useTheme } from 'next-themes';
 import { User, Lock, Bell, Settings, Shield, Moon, Sun, Monitor, LogOut, CheckCircle, Smartphone, Mail, Globe } from 'lucide-react';
 
 export default function ProfileSettings() {
     const { data: session } = useSession();
-    const { theme, setTheme } = useTheme();
     const [activeTab, setActiveTab] = useState('personal');
 
     const tabs = [
         { id: 'personal', label: 'Personal Info', icon: User },
         { id: 'preferences', label: 'Preferences', icon: Globe },
         { id: 'notifications', label: 'Notifications', icon: Bell },
+        { id: 'account', label: 'Account Details', icon: Shield },
     ];
 
     const [formData, setFormData] = useState({
@@ -301,41 +300,6 @@ export default function ProfileSettings() {
                                 </div>
                             </div>
 
-                            <div className="space-y-4">
-                                <h3 className="text-sm font-bold text-foreground border-b border-border pb-2">Appearance</h3>
-                                <div className="grid grid-cols-3 gap-4">
-                                    <button
-                                        onClick={() => setTheme('light')}
-                                        className={`p-4 rounded-xl border flex flex-col items-center gap-3 transition-all ${theme === 'light'
-                                            ? 'bg-white text-black border-primary ring-2 ring-primary/50'
-                                            : 'bg-white/10 border-border text-muted-foreground hover:bg-white/20'
-                                            }`}
-                                    >
-                                        <Sun size={24} />
-                                        <span className="text-xs font-bold">Light</span>
-                                    </button>
-                                    <button
-                                        onClick={() => setTheme('dark')}
-                                        className={`p-4 rounded-xl border flex flex-col items-center gap-3 transition-all ${theme === 'dark'
-                                            ? 'bg-black text-white border-primary ring-2 ring-primary/50'
-                                            : 'bg-secondary border-border text-muted-foreground hover:bg-muted'
-                                            }`}
-                                    >
-                                        <Moon size={24} />
-                                        <span className="text-xs font-bold">Dark</span>
-                                    </button>
-                                    <button
-                                        onClick={() => setTheme('system')}
-                                        className={`p-4 rounded-xl border flex flex-col items-center gap-3 transition-all ${theme === 'system'
-                                            ? 'bg-card text-foreground border-primary ring-2 ring-primary/50'
-                                            : 'bg-secondary border-border text-muted-foreground hover:bg-muted'
-                                            }`}
-                                    >
-                                        <Monitor size={24} />
-                                        <span className="text-xs font-bold">System</span>
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     )}
 
@@ -377,6 +341,116 @@ export default function ProfileSettings() {
                                     <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-sm ${formData.inAppNotifs ? 'left-7' : 'left-1'}`}></div>
                                 </button>
                             </div>
+                        </div>
+                    )}
+
+                    {/* Account Details Tab with Collapsible Sections */}
+                    {activeTab === 'account' && (
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-muted-foreground">Username</label>
+                                <div className="relative">
+                                    <User className="absolute left-3 top-3 text-muted-foreground" size={16} />
+                                    <input
+                                        type="text"
+                                        value={formData.fullName.replace(/\s+/g, '').toLowerCase()}
+                                        disabled
+                                        className="w-full bg-secondary/50 border border-border rounded-xl py-2.5 pl-10 pr-4 text-muted-foreground text-sm cursor-not-allowed"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Password Reset Section - Collapsible */}
+                            <div className="border border-border rounded-xl overflow-hidden">
+                                <button
+                                    onClick={() => setShowPasswordReset(!showPasswordReset)}
+                                    className="w-full p-4 bg-secondary hover:bg-muted flex items-center justify-between transition-colors"
+                                >
+                                    <div className="text-left">
+                                        <h3 className="text-sm font-bold text-foreground mb-1">Password</h3>
+                                        <p className="text-xs text-muted-foreground">Change your account password</p>
+                                    </div>
+                                    <Lock size={16} className={`text-muted-foreground transition-transform ${showPasswordReset ? 'rotate-180' : ''}`} />
+                                </button>
+                                
+                                {showPasswordReset && (
+                                    <div className="p-4 bg-card border-t border-border space-y-3">
+                                        <input
+                                            type="password"
+                                            placeholder="Current Password"
+                                            className="w-full bg-input/50 md:bg-input/20 border border-border rounded-xl py-2.5 px-4 text-foreground text-sm focus:border-primary focus:outline-none"
+                                            value={passwordData.currentPassword}
+                                            onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                                        />
+                                        <input
+                                            type="password"
+                                            placeholder="New Password"
+                                            className="w-full bg-input/50 md:bg-input/20 border border-border rounded-xl py-2.5 px-4 text-foreground text-sm focus:border-primary focus:outline-none"
+                                            value={passwordData.newPassword}
+                                            onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                                        />
+                                        <input
+                                            type="password"
+                                            placeholder="Confirm New Password"
+                                            className="w-full bg-input/50 md:bg-input/20 border border-border rounded-xl py-2.5 px-4 text-foreground text-sm focus:border-primary focus:outline-none"
+                                            value={passwordData.confirmPassword}
+                                            onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                                        />
+                                        <button
+                                            onClick={handleChangePassword}
+                                            disabled={loading}
+                                            className="w-full bg-primary hover:bg-primary/90 text-black px-4 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+                                        >
+                                            {loading ? 'Updating...' : 'Reset Password'}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Account Deactivation Section - Collapsible */}
+                            <div className="border border-red-500/30 rounded-xl overflow-hidden">
+                                <button
+                                    onClick={() => setShowDeactivate(!showDeactivate)}
+                                    className="w-full p-4 bg-red-500/10 hover:bg-red-500/20 flex items-center justify-between transition-colors"
+                                >
+                                    <div className="text-left">
+                                        <h3 className="text-sm font-bold text-red-500 mb-1 flex items-center gap-2">
+                                            <LogOut size={14} /> Deactivate Account
+                                        </h3>
+                                        <p className="text-xs text-muted-foreground">Permanently delete your account</p>
+                                    </div>
+                                    <Lock size={16} className={`text-red-500 transition-transform ${showDeactivate ? 'rotate-180' : ''}`} />
+                                </button>
+                                
+                                {showDeactivate && (
+                                    <div className="p-4 bg-card border-t border-red-500/30 space-y-3">
+                                        <p className="text-xs text-muted-foreground">
+                                            Once you deactivate your account, all your data will be permanently deleted. This action cannot be undone.
+                                        </p>
+                                        <input
+                                            type="password"
+                                            placeholder="Enter your password to confirm"
+                                            className="w-full bg-secondary border border-border rounded-xl py-2.5 px-4 text-foreground text-sm focus:border-red-500 focus:outline-none"
+                                            value={deactivatePassword}
+                                            onChange={(e) => setDeactivatePassword(e.target.value)}
+                                        />
+                                        <button
+                                            onClick={handleDeactivateAccount}
+                                            disabled={loading || !deactivatePassword}
+                                            className="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+                                        >
+                                            {loading ? 'Deactivating...' : 'Deactivate Account'}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Success/Error Message */}
+                            {message.text && (
+                                <div className={`p-4 rounded-xl border ${message.type === 'success' ? 'bg-primary/10 border-primary/30 text-primary' : 'bg-red-500/10 border-red-500/30 text-red-500'}`}>
+                                    <p className="text-sm font-bold">{message.text}</p>
+                                </div>
+                            )}
                         </div>
                     )}
 

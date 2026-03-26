@@ -85,6 +85,13 @@ export async function generateInsights(profile: UserProfile): Promise<Insight[]>
     return insights;
 }
 
+export interface ForecastPoint {
+    day: string;
+    price: number;
+    upper: number;
+    lower: number;
+}
+
 export interface PredictionResult {
     prediction: number;
     features: {
@@ -98,6 +105,7 @@ export interface PredictionResult {
         prices: number[];
         volumes: number[];
     };
+    forecast?: ForecastPoint[];
 }
 
 export async function getCustomPrediction(

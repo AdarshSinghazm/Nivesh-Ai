@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { EnhancedStock } from '@/lib/services/enhancedStockService';
+import { EnhancedStock } from '@/lib/types';
 import { analyzeStock, StockAnalysisInput, StockAnalysisResult } from '@/lib/services/advancedAnalyzerService';
 import { getAllEnhancedStocks } from '@/lib/services/enhancedStockService';
 import { getMockPrediction } from '@/lib/data/mockPredictions';
@@ -81,19 +81,19 @@ export default function AdvancedAnalyzerPage() {
 
     if (step === 'results' && result) {
         return (
-            <div className="min-h-screen bg-black p-8">
+            <div className="min-h-screen bg-background p-8">
                 <div className="max-w-7xl mx-auto space-y-8">
                     {/* Header */}
                     <div className="flex items-center justify-between animate-fade-in">
                         <div>
-                            <h1 className="text-5xl font-black text-white mb-2">
+                            <h1 className="text-5xl font-black text-foreground mb-2">
                                 {result.stock.symbol} <span className="text-[#00ff9d]">Analysis</span>
                             </h1>
-                            <p className="text-gray-400 text-lg">{result.stock.name}</p>
+                            <p className="text-muted-foreground text-lg">{result.stock.name}</p>
                         </div>
                         <button
                             onClick={() => setStep('form')}
-                            className="px-6 py-3 bg-[#1a1a1a] hover:bg-[#2a2a2a] border border-[#2a2a2a] hover:border-[#00ff9d] text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(0,255,157,0.2)]"
+                            className="px-6 py-3 bg-card hover:bg-muted border border-border hover:border-primary text-foreground rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(0,255,157,0.2)]"
                         >
                             Analyze Another Stock
                         </button>
@@ -109,7 +109,7 @@ export default function AdvancedAnalyzerPage() {
                                     Confidence: {result.confidence.toUpperCase()}
                                 </p>
                             </div>
-                            <div className="text-right bg-black/20 p-4 rounded-xl backdrop-blur-sm">
+                            <div className="text-right bg-black/20 dark:bg-black/40 p-4 rounded-xl backdrop-blur-sm">
                                 <p className="text-sm font-bold opacity-80 uppercase tracking-widest mb-1">Overall Score</p>
                                 <p className="text-6xl font-black">{(result.scores.total * 5).toFixed(0)}/100</p>
                             </div>
@@ -119,21 +119,21 @@ export default function AdvancedAnalyzerPage() {
 
                     {/* Position Summary */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-fade-in">
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-6 hover:border-[#00ff9d] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary transition-all duration-300 group">
                             <p className="text-sm text-gray-500 uppercase tracking-wider mb-2 font-bold group-hover:text-[#00ff9d] transition-colors">Current Price</p>
                             <p className="text-4xl font-black text-white">₹{result.stock.price.toFixed(2)}</p>
                         </div>
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-6 hover:border-[#00ff9d] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary transition-all duration-300 group">
                             <p className="text-sm text-gray-500 uppercase tracking-wider mb-2 font-bold group-hover:text-[#00ff9d] transition-colors">Investment</p>
                             <p className="text-4xl font-black text-white">₹{(result.input.shares * result.input.avgBuyPrice).toFixed(0)}</p>
                         </div>
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-6 hover:border-[#00ff9d] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary transition-all duration-300 group">
                             <p className="text-sm text-gray-500 uppercase tracking-wider mb-2 font-bold group-hover:text-[#00ff9d] transition-colors">Current Value</p>
                             <p className="text-4xl font-black text-white">₹{result.currentValue.toFixed(0)}</p>
                         </div>
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-6 hover:border-[#00ff9d] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-6 hover:border-primary transition-all duration-300 group">
                             <p className="text-sm text-gray-500 uppercase tracking-wider mb-2 font-bold group-hover:text-[#00ff9d] transition-colors">P&L</p>
-                            <p className={`text-4xl font-black ${result.profitLoss >= 0 ? 'text-[#00ff9d]' : 'text-[#ff4444]'}`}>
+                            <p className={`text-4xl font-black ${result.profitLoss >= 0 ? 'text-primary' : 'text-red-500'}`}>
                                 {result.profitLoss >= 0 ? '+' : ''}₹{result.profitLoss.toFixed(0)}
                             </p>
                             <p className={`text-sm font-bold mt-1 ${result.profitLoss >= 0 ? 'text-[#00ff9d]' : 'text-[#ff4444]'}`}>
@@ -144,9 +144,9 @@ export default function AdvancedAnalyzerPage() {
 
                     {/* Scores Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 hover:border-[#00ff9d] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-8 hover:border-primary transition-all duration-300 group">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-xl font-bold text-white group-hover:text-[#00ff9d] transition-colors">Technical Score</h3>
+                                <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">Technical Score</h3>
                                 <BarChart3 className="w-6 h-6 text-gray-600 group-hover:text-[#00ff9d] transition-colors" />
                             </div>
                             <div className="flex items-end gap-2 mb-4">
@@ -158,9 +158,9 @@ export default function AdvancedAnalyzerPage() {
                             </div>
                         </div>
 
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 hover:border-[#00ff9d] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-8 hover:border-primary transition-all duration-300 group">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-xl font-bold text-white group-hover:text-[#00ff9d] transition-colors">Fundamental Score</h3>
+                                <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">Fundamental Score</h3>
                                 <Target className="w-6 h-6 text-gray-600 group-hover:text-[#00ff9d] transition-colors" />
                             </div>
                             <div className="flex items-end gap-2 mb-4">
@@ -172,9 +172,9 @@ export default function AdvancedAnalyzerPage() {
                             </div>
                         </div>
 
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 hover:border-[#ff4444] transition-all duration-300 group">
+                        <div className="bg-card rounded-xl border border-border p-8 hover:border-red-500 transition-all duration-300 group">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-xl font-bold text-white group-hover:text-[#ff4444] transition-colors">Risk Score</h3>
+                                <h3 className="text-xl font-bold text-foreground group-hover:text-destructive transition-colors">Risk Score</h3>
                                 <AlertCircle className="w-6 h-6 text-gray-600 group-hover:text-[#ff4444] transition-colors" />
                             </div>
                             <div className="flex items-end gap-2 mb-4">
@@ -188,10 +188,10 @@ export default function AdvancedAnalyzerPage() {
                     </div>
 
                     {/* Action Items */}
-                    <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 animate-fade-in hover:border-[#00ff9d] transition-all duration-300">
+                    <div className="bg-card rounded-xl border border-border p-8 animate-fade-in hover:border-primary transition-all duration-300">
                         <div className="flex items-center gap-3 mb-6">
                             <CheckCircle className="w-8 h-8 text-[#00ff9d]" />
-                            <h3 className="text-3xl font-black text-white">Action Items</h3>
+                            <h3 className="text-3xl font-black text-foreground">Action Items</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {result.detailedAnalysis.whyThisDecision.map((item, idx) => (
@@ -208,10 +208,10 @@ export default function AdvancedAnalyzerPage() {
                     {/* Detailed Analysis */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
                         {/* Technical Analysis */}
-                        <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 hover:border-[#00ff9d] transition-all duration-300">
+                        <div className="bg-card rounded-xl border border-border p-8 hover:border-primary transition-all duration-300">
                             <div className="flex items-center gap-3 mb-6">
                                 <TrendingUp className="w-6 h-6 text-[#00ff9d]" />
-                                <h3 className="text-2xl font-black text-white">Technical Analysis</h3>
+                                <h3 className="text-2xl font-black text-foreground">Technical Analysis</h3>
                             </div>
                             <div className="space-y-6">
                                 <div>
@@ -233,7 +233,7 @@ export default function AdvancedAnalyzerPage() {
                         <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 hover:border-[#00ff9d] transition-all duration-300">
                             <div className="flex items-center gap-3 mb-6">
                                 <Target className="w-6 h-6 text-[#00ff9d]" />
-                                <h3 className="text-2xl font-black text-white">Fundamental Analysis</h3>
+                                <h3 className="text-2xl font-black text-foreground">Fundamental Analysis</h3>
                             </div>
                             <div className="space-y-6">
                                 <div>
@@ -258,32 +258,32 @@ export default function AdvancedAnalyzerPage() {
                     )}
 
                     {/* Portfolio Impact */}
-                    <div className="bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] p-8 animate-fade-in hover:border-[#00ff9d] transition-all duration-300">
+                    <div className="bg-card rounded-xl border border-border p-8 animate-fade-in hover:border-primary transition-all duration-300">
                         <div className="flex items-center gap-3 mb-6">
-                            <Info className="w-6 h-6 text-[#00ff9d]" />
-                            <h3 className="text-2xl font-black text-white">Portfolio Impact</h3>
+                            <Info className="w-6 h-6 text-primary" />
+                            <h3 className="text-2xl font-black text-foreground">Portfolio Impact</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-[#0a0a0a] p-6 rounded-xl border border-[#2a2a2a] hover:border-yellow-500/50 transition-colors">
+                            <div className="bg-secondary/50 p-6 rounded-xl border border-border hover:border-yellow-500/50 transition-colors">
                                 <div className="flex items-center gap-2 mb-3">
                                     <AlertCircle className="w-5 h-5 text-yellow-500" />
-                                    <span className="font-bold text-white">Concentration</span>
+                                    <span className="font-bold text-foreground">Concentration</span>
                                 </div>
-                                <p className="text-gray-400 text-sm leading-relaxed">{result.detailedAnalysis.portfolioImpact.concentration}</p>
+                                <p className="text-muted-foreground text-sm leading-relaxed">{result.detailedAnalysis.portfolioImpact.concentration}</p>
                             </div>
-                            <div className="bg-[#0a0a0a] p-6 rounded-xl border border-[#2a2a2a] hover:border-blue-500/50 transition-colors">
+                            <div className="bg-secondary/50 p-6 rounded-xl border border-border hover:border-blue-500/50 transition-colors">
                                 <div className="flex items-center gap-2 mb-3">
                                     <Target className="w-5 h-5 text-blue-500" />
-                                    <span className="font-bold text-white">Diversification</span>
+                                    <span className="font-bold text-foreground">Diversification</span>
                                 </div>
-                                <p className="text-gray-400 text-sm leading-relaxed">{result.detailedAnalysis.portfolioImpact.diversification}</p>
+                                <p className="text-muted-foreground text-sm leading-relaxed">{result.detailedAnalysis.portfolioImpact.diversification}</p>
                             </div>
-                            <div className="bg-[#0a0a0a] p-6 rounded-xl border border-[#2a2a2a] hover:border-orange-500/50 transition-colors">
+                            <div className="bg-secondary/50 p-6 rounded-xl border border-border hover:border-orange-500/50 transition-colors">
                                 <div className="flex items-center gap-2 mb-3">
                                     <AlertCircle className="w-5 h-5 text-orange-500" />
-                                    <span className="font-bold text-white">Risk Assessment</span>
+                                    <span className="font-bold text-foreground">Risk Assessment</span>
                                 </div>
-                                <p className="text-gray-400 text-sm leading-relaxed">{result.detailedAnalysis.portfolioImpact.riskAssessment}</p>
+                                <p className="text-muted-foreground text-sm leading-relaxed">{result.detailedAnalysis.portfolioImpact.riskAssessment}</p>
                             </div>
                         </div>
                     </div>
@@ -294,67 +294,67 @@ export default function AdvancedAnalyzerPage() {
 
     // Form Screen
     return (
-        <div className="min-h-screen bg-black p-8">
+        <div className="min-h-screen bg-background p-8">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-12 text-center animate-fade-in">
-                    <h1 className="text-5xl font-black text-white mb-4">
-                        Advanced Stock <span className="text-[#00ff9d]">Analyzer</span>
+                    <h1 className="text-5xl font-black text-foreground mb-4">
+                        Advanced Stock <span className="text-primary">Analyzer</span>
                     </h1>
-                    <p className="text-xl text-gray-400">Professional NSE stock analysis with technical & fundamental insights</p>
+                    <p className="text-xl text-muted-foreground">Professional NSE stock analysis with technical & fundamental insights</p>
                 </div>
 
-                <div className="bg-[#1a1a1a] rounded-3xl wireframe-glow border border-[#2a2a2a] p-8 md:p-12 space-y-10 shadow-2xl animate-fade-in">
+                <div className="bg-card rounded-3xl wireframe-glow border border-border p-8 md:p-12 space-y-10 shadow-2xl animate-fade-in">
                     {/* Stock Selection */}
                     <div>
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="p-3 bg-[#00ff9d]/10 rounded-xl">
-                                <TrendingUp className="w-6 h-6 text-[#00ff9d]" />
+                            <div className="p-3 bg-primary/10 rounded-xl">
+                                <TrendingUp className="w-6 h-6 text-primary" />
                             </div>
-                            <h2 className="text-2xl font-bold text-white">Stock Details</h2>
+                            <h2 className="text-2xl font-bold text-foreground">Stock Details</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">NSE Stock Symbol</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">NSE Stock Symbol</label>
                                 <select
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all appearance-none"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                                     value={symbol}
                                     onChange={(e) => setSymbol(e.target.value)}
                                 >
-                                    <option value="" className="bg-[#1a1a1a]">Select a stock</option>
+                                    <option value="" className="bg-card">Select a stock</option>
                                     {availableStocks.map(stock => (
-                                        <option key={stock.symbol} value={stock.symbol} className="bg-[#1a1a1a]">
+                                        <option key={stock.symbol} value={stock.symbol} className="bg-card">
                                             {stock.symbol} - {stock.name}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Number of Shares</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Number of Shares</label>
                                 <input
                                     type="number"
                                     placeholder="100"
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all placeholder-gray-500"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-muted-foreground"
                                     value={shares}
                                     onChange={(e) => setShares(e.target.value)}
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Average Buy Price (₹)</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Average Buy Price (₹)</label>
                                 <input
                                     type="number"
                                     placeholder="2400"
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all placeholder-gray-500"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-muted-foreground"
                                     value={avgBuyPrice}
                                     onChange={(e) => setAvgBuyPrice(e.target.value)}
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Total Portfolio Value (₹)</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Total Portfolio Value (₹)</label>
                                 <input
                                     type="number"
                                     placeholder="500000"
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all placeholder-gray-500"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-muted-foreground"
                                     value={totalPortfolio}
                                     onChange={(e) => setTotalPortfolio(e.target.value)}
                                 />
@@ -363,19 +363,19 @@ export default function AdvancedAnalyzerPage() {
                     </div>
 
                     {/* Investment Profile */}
-                    <div className="pt-8 border-t border-[#2a2a2a]">
+                    <div className="pt-8 border-t border-border">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="p-3 bg-[#00ff9d]/10 rounded-xl">
-                                <Target className="w-6 h-6 text-[#00ff9d]" />
+                            <div className="p-3 bg-primary/10 rounded-xl">
+                                <Target className="w-6 h-6 text-primary" />
                             </div>
-                            <h2 className="text-2xl font-bold text-white">Investment Profile</h2>
+                            <h2 className="text-2xl font-bold text-foreground">Investment Profile</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Investment Type</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Investment Type</label>
                                 <select
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all appearance-none"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                                     value={investmentType}
                                     onChange={(e) => setInvestmentType(e.target.value as any)}
                                 >
@@ -386,9 +386,9 @@ export default function AdvancedAnalyzerPage() {
                                 </select>
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Investment Horizon</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Investment Horizon</label>
                                 <select
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all appearance-none"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                                     value={investmentHorizon}
                                     onChange={(e) => setInvestmentHorizon(e.target.value as any)}
                                 >
@@ -399,9 +399,9 @@ export default function AdvancedAnalyzerPage() {
                                 </select>
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Risk Tolerance</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Risk Tolerance</label>
                                 <select
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all appearance-none"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                                     value={riskTolerance}
                                     onChange={(e) => setRiskTolerance(e.target.value as any)}
                                 >
@@ -411,9 +411,9 @@ export default function AdvancedAnalyzerPage() {
                                 </select>
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Investment Goal</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Investment Goal</label>
                                 <select
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all appearance-none"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                                     value={goal}
                                     onChange={(e) => setGoal(e.target.value as any)}
                                 >
@@ -427,31 +427,31 @@ export default function AdvancedAnalyzerPage() {
                     </div>
 
                     {/* Exit Strategy */}
-                    <div className="pt-8 border-t border-[#2a2a2a]">
+                    <div className="pt-8 border-t border-border">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="p-3 bg-[#00ff9d]/10 rounded-xl">
-                                <ShieldCheck className="w-6 h-6 text-[#00ff9d]" />
+                            <div className="p-3 bg-primary/10 rounded-xl">
+                                <ShieldCheck className="w-6 h-6 text-primary" />
                             </div>
-                            <h2 className="text-2xl font-bold text-white">Exit Strategy (Optional)</h2>
+                            <h2 className="text-2xl font-bold text-foreground">Exit Strategy (Optional)</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Target Price (₹)</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Target Price (₹)</label>
                                 <input
                                     type="number"
                                     placeholder="2800"
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all placeholder-gray-500"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-muted-foreground"
                                     value={targetPrice}
                                     onChange={(e) => setTargetPrice(e.target.value)}
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-gray-400 uppercase tracking-wider">Stop Loss (₹)</label>
+                                <label className="block text-sm font-bold text-muted-foreground uppercase tracking-wider">Stop Loss (₹)</label>
                                 <input
                                     type="number"
                                     placeholder="2200"
-                                    className="w-full p-4 bg-[#2a2a2a] border border-[#444] rounded-xl text-white focus:border-[#00ff9d] focus:ring-1 focus:ring-[#00ff9d] outline-none transition-all placeholder-gray-500"
+                                    className="w-full p-4 bg-secondary border border-border rounded-xl text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-muted-foreground"
                                     value={stopLoss}
                                     onChange={(e) => setStopLoss(e.target.value)}
                                 />
@@ -461,7 +461,7 @@ export default function AdvancedAnalyzerPage() {
 
                     <button
                         onClick={handleAnalyze}
-                        className="w-full bg-[#00ff9d] hover:bg-[#00e5a0] text-black p-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,255,157,0.4)]"
+                        className="w-full bg-primary hover:bg-primary/90 text-black p-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,255,157,0.4)]"
                     >
                         <Target size={24} className="stroke-2" />
                         ANALYZE STOCK

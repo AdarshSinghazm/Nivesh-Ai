@@ -18,10 +18,23 @@ export async function GET(request: NextRequest) {
             const quotes = await yahooFinance.quote(symbols);
             return NextResponse.json({ quotes });
         } else {
-            // Fetch single quote
-            // @ts-expect-error - yahoo-finance returns a broader quote object than the default type allows
-            const quote = await yahooFinance.quote(symbol);
-            return NextResponse.json({ quote });
+            // Fetch single quote with extended data for real-world audit
+            const quote = await yahooFinance.quote(symbol as string);
+            
+            let extendedData = {};
+            try {
+                // Fetch fundamentals (financials, stats)
+                extendedData = await yahooFinance.quoteSummary(symbol as string, {
+                    modules: ['financialData', 'defaultKeyStatistics', 'summaryDetail']
+                });
+            } catch (summaryError) {
+                console.warn(`Could not fetch quoteSummary for ${symbol}`, summaryError);
+            }
+
+            return NextResponse.json({ 
+                quote,
+                fundamentals: extendedData 
+            });
         }
     } catch (error) {
         console.error('Yahoo Finance API Error:', error);
