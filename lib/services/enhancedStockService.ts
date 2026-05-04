@@ -1,4 +1,5 @@
 import { Stock, EnhancedStock, TechnicalIndicators, FundamentalMetrics, MarketSentiment } from '../types';
+export type { EnhancedStock };
 
 // Fallback data in case API fails
 const fallbackStocks: Record<string, Partial<EnhancedStock>> = {
