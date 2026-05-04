@@ -21,7 +21,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const scriptPath = path.join(process.cwd(), 'predict_stock.py');
 
         const predictionResult = await new Promise<{ error?: string; details?: string; status?: number; result?: string; confidence?: number }>((resolve) => {
-            const pythonProcess = spawn('python', [scriptPath]);
+            // Use python3 for Linux/Railway, fallback to python for Windows
+            const pythonCommand = process.platform === 'win32' ? 'python' : 'python3';
+            const pythonProcess = spawn(pythonCommand, [scriptPath]);
 
             let result = '';
             let error = '';
