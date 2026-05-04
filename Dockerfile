@@ -1,5 +1,5 @@
-# Use Node.js as the base image
-FROM node:18-slim
+# Use Node.js 20 as the base image
+FROM node:20-slim
 
 # Install Python and other dependencies
 RUN apt-get update && apt-get install -y \
