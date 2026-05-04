@@ -18,7 +18,7 @@ RUN npm install
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt ./
-RUN python3 -m pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r requirements.txt
 
 # Copy the rest of the application
 COPY . .
