@@ -23,12 +23,12 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages -r requirement
 # Copy the rest of the application
 COPY . .
 
-# Generate Prisma client and build Next.js
+# Generate Prisma client and build Next.js (skip db push during build)
 RUN npx prisma generate
-RUN npm run build
+RUN NEXT_TELEMETRY_DISABLED=1 npx next build
 
 # Expose the port (Railway uses PORT env var)
 EXPOSE 8080
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application - run migrations/db push at runtime
+CMD npx prisma db push --accept-data-loss && npm start
