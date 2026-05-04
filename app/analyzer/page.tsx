@@ -330,7 +330,11 @@ export default function AnalyzerPage() {
                                         <div>
                                             <div className="flex items-center gap-3 mb-1">
                                                 <h3 className="text-2xl font-black text-foreground">{rec.stock.symbol}</h3>
-                                                <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest ${rec.action === 'buy' ? 'bg-primary text-black' : rec.action === 'sell' ? 'bg-[#ff4444] text-white' : 'bg-muted text-muted-foreground'}`}>{rec.action}</span>
+                                                <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest ${
+                                                    rec.action === 'buy' ? 'bg-primary text-black' : 
+                                                    rec.action === 'sell' ? 'bg-[#ff4444] text-white' : 
+                                                    'bg-amber-500 text-white'
+                                                }`}>{rec.action}</span>
                                             </div>
                                             <p className="text-sm text-muted-foreground">{rec.stock.name}</p>
                                         </div>
@@ -372,7 +376,11 @@ export default function AnalyzerPage() {
                                 <div className="border-b border-border pb-8">
                                     <div className="flex items-center gap-4 mb-2">
                                         <h2 className="text-5xl font-black text-foreground tracking-tight">{selectedRec.stock.symbol}</h2>
-                                        <div className={`px-4 py-1.5 rounded-lg text-sm font-black uppercase tracking-widest ${selectedRec.action === 'buy' ? 'bg-primary text-black shadow-[0_0_15px_rgba(0,255,157,0.3)]' : 'bg-destructive text-white shadow-[0_0_15px_rgba(255,68,68,0.3)]'}`}>{selectedRec.action} RECOMMENDED</div>
+                                        <div className={`px-4 py-1.5 rounded-lg text-sm font-black uppercase tracking-widest ${
+                                            selectedRec.action === 'buy' ? 'bg-primary text-black shadow-[0_0_15px_rgba(0,255,157,0.3)]' : 
+                                            selectedRec.action === 'sell' ? 'bg-destructive text-white shadow-[0_0_15px_rgba(255,68,68,0.3)]' : 
+                                            'bg-amber-500 text-white shadow-[0_0_15px_rgba(245,158,11,0.3)]'
+                                        }`}>{selectedRec.action} RECOMMENDED</div>
                                     </div>
                                     <p className="text-xl text-muted-foreground">{selectedRec.stock.name}</p>
                                 </div>
